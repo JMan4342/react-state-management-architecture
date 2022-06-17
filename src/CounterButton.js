@@ -1,12 +1,12 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { numberOfClicksSelector } from "./numberOfClicksSelector";
-import { incrementByState } from "./incrementByState";
-import { counterState } from "./counterState";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getNumberOfClicks } from "./selectors";
+import { counterButtonClicked } from "./actions";
 
 export const CounterButton = () => {
-  const numberOfClicks = useRecoilValue(numberOfClicksSelector);
-  const [clicksData , setClicksData] = useRecoilState(counterState);
-  const [incrementBy, setIncrementBy] = useRecoilState(incrementByState);
+  const numberOfClicks = useSelector(getNumberOfClicks);
+  const dispatch = useDispatch();
+  const [incrementBy, setIncrementBy] = useState(1);
 
   return (
     <>
@@ -19,14 +19,7 @@ export const CounterButton = () => {
           type="number"
         />
       </label>
-      <button
-        onClick={() =>
-          setClicksData([
-            ...clicksData,
-            { timestamp: Date.now(), amount: incrementBy },
-          ])
-        }
-      >
+      <button onClick={() => dispatch(counterButtonClicked(incrementBy))}>
         Click
       </button>
     </>
